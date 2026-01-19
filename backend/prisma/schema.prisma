@@ -1,0 +1,58 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+enum Role {
+  USER
+  ADMIN
+  RUNNER
+}
+
+enum TaskStatus {
+  PENDING
+  PRICED
+  ACCEPTED
+  ASSIGNED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  phone    String   @unique
+  password String
+  role     Role     @default(USER)
+  created  DateTime @default(now())
+
+  tasks    Task[]   @relation("UserTasks")
+  runs     Task[]   @relation("RunnerTasks")
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  description String
+  location    String
+  price       Float?
+  status      TaskStatus @default(PENDING)
+  userId      String
+  runnerId    String?
+  created     DateTime   @default(now())
+
+  user        User       @relation("UserTasks", fields: [userId], references: [id])
+  runner      User?      @relation("RunnerTasks", fields: [runnerId], references: [id])
+}
