@@ -3,6 +3,7 @@ import prisma from "../../prisma.js";
 const me = async (req,res) => {
     try {
         const authenticatedUser = req.user;
+        if (!req.user) return res.status(401).json({ error: "Unauthorized" });
 
         const user = await prisma.user.findUnique({
             where:{id: authenticatedUser.id}

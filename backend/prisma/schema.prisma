@@ -46,7 +46,8 @@ model User {
 model Task {
   id          String     @id @default(uuid())
   description String
-  location    String
+  latitude    Float
+  longitude   Float
   price       Float?
   status      TaskStatus @default(PENDING)
   userId      String
