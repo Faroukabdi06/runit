@@ -26,7 +26,7 @@ const getAllTasks = async (req,res) => {
         else return res.status(403).json({error:"Invalid Role"})
 
         res.status(200).json({data:tasks})
-        
+
     } catch (error) {
         console.error(error)
         res.status(500).json({error:"Internal server error"})
@@ -34,4 +34,4 @@ const getAllTasks = async (req,res) => {
 
 }
 
-export default getAllTasks;
+export default getAllTasks; 
